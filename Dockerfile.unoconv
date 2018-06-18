@@ -1,0 +1,3 @@
+FROM xvtsolutions/microsoft-aspnetcore-2.0-aws:latest
+
+RUN apt-get update && apt-get -y upgrade && apt-get install -y unoconv && apt-get clean

@@ -1,3 +1,5 @@
 FROM xvtsolutions/microsoft-aspnetcore-2.0-aws:latest
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y unoconv && apt-get clean
+
+COPY unoconv-0.8.2 /usr/local/bin/unoconv-0.8.2

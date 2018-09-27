@@ -21,7 +21,7 @@ from AWS SSM parameter store and export it into the environments before doing a
 
 Have a look at script `update-dotnet.sh` and then run it.
 
-*Sample of the entry point python script*
+*Example of the entry point python script*
 
 ```
 #!/usr/bin/python3
@@ -67,3 +67,19 @@ os.execvpe("dotnet", ["dotnet", "Application.dll"], os.environ)
 
 ```
 
+*Example of the final app Docker file*
+
+```
+FROM xvtsolutions/dotnet-aspnetcore-runtime-aws:2.1.4
+
+ENV KESTREL_PORT 80
+EXPOSE 80
+
+# Copying build result and entry point script
+WORKDIR /app
+COPY obj/Docker/publish .
+COPY docker_entry_point.py .
+
+ENTRYPOINT ["/app/docker_entry_point.py"]
+
+```

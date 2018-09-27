@@ -17,7 +17,11 @@ python script. The python script can fetch the run time configuration variables
 from AWS SSM parameter store and export it into the environments before doing a
 `execvpe` the final dotnet to start the dotnet app.
 
-Sample of the entry point python script
+*Update to the latest dotnet version from base image*
+
+Have a look at script `update-dotnet.sh` and then run it.
+
+*Sample of the entry point python script*
 
 ```
 #!/usr/bin/python3

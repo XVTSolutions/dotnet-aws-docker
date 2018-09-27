@@ -1,4 +1,4 @@
-#!/bin/bash -ex
+#!/bin/bash -e
 
 # Run this script to bring up the last up-to-date version of the current m$
 # dotnet image and build the coresponding xvt ones.
@@ -24,12 +24,16 @@ docker tag xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG} xvtsolutions/dotn
 docker build -t xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG -f Dockerfile.runtime.unoconv .
 docker tag  xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG  xvtsolutions/dotnet-runtime-aws-unoconv:latest
 
+docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws-unoconv-newrelic .
+docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
+
 echo
 echo "############"
 echo "Completed build for the folowwing images:"
 echo
 echo "xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG"
 echo "xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG"
+echo "xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG"
 echo "xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}"
 echo "xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG"
 echo

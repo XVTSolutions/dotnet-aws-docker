@@ -1,0 +1,11 @@
+# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
+
+# Note that it only install the newrelic apm deb into the container. It does
+# not set the environment for the apm run. You can enable newrelic apm using the
+# entry point script to setup the proper env dynamically. See
+# https://docs.newrelic.com/docs/agents/net-agent/installation/install-net-core-20-agent-docker
+# for more infomation.
+
+FROM xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:latest
+
+RUN curl -s -o /tmp/newrelic-apm.deb https://download.newrelic.com/dot_net_agent/latest_release/newrelic-netcore20-agent_8.6.45.0_amd64.deb && dpkg -i /tmp/newrelic-apm.deb

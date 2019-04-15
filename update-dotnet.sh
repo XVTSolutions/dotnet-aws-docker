@@ -27,6 +27,12 @@ docker tag  xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG  xvtsoluti
 docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws-unoconv-newrelic .
 docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
 
+# sonar scanner
+
+docker pull microsoft/dotnet:2.1-sdk
+FULL_VERSION_TAG=$(docker run --rm microsoft/dotnet:2.1-sdk dotnet --version)
+docker build -t xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} -f Dockerfile.sonar-scanner .
+
 echo
 echo "############"
 echo "Completed build for the folowwing images:"

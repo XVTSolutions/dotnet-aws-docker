@@ -1,10 +1,6 @@
 # This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:2.1
 
-FROM microsoft/dotnet:2.1-aspnetcore-runtime
-
-RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli python3-pip && apt-get clean
-
-RUN pip3 install -U boto3
+FROM xvtsolutions/dotnet-aspnetcore-runtime-aws:latest
 
 RUN curl -s -o /tmp/newrelic-apm.deb https://download.newrelic.com/dot_net_agent/latest_release/newrelic-netcore20-agent_8.15.455.0_amd64.deb && dpkg -i /tmp/newrelic-apm.deb
 

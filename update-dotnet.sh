@@ -33,8 +33,8 @@ docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VER
 # sonar scanner
 
 docker pull microsoft/dotnet:2.1-sdk
-FULL_VERSION_TAG=$(docker run --rm microsoft/dotnet:2.1-sdk dotnet --version)
-docker build -t xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} -f Dockerfile.sonar-scanner .
+FULL_VERSION_TAG_SONAR=$(docker run --rm microsoft/dotnet:2.1-sdk dotnet --version)
+docker build -t xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG_SONAR} -f Dockerfile.sonar-scanner .
 
 echo
 echo "############"
@@ -51,3 +51,26 @@ echo "You have to login docker hub and push it manually if it is ready"
 echo
 echo "############"
 
+echo "Run docker login and then copy paste the push commands below"
+
+cat <<EOF
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:latest
+
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:latest
+
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:latest
+
+docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}
+docker push xvtsolutions/dotnet-runtime-aws:latest
+
+docker push xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-runtime-aws-unoconv:latest
+
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
+
+docker push xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG_SONAR}
+EOF

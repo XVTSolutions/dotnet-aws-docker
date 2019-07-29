@@ -1,7 +1,7 @@
 # Build xvtsolutions/dotnet-sdk-sonar-scanner:<dotnet_version>
 # This is to use as geenric dotnet sonal scanner
 
-FROM microsoft/dotnet:2.1-sdk
+FROM microsoft/dotnet:2.2-sdk
 
 #install Java
 USER root

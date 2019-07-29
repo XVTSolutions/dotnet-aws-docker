@@ -40,12 +40,12 @@ echo
 echo "############"
 echo "Completed build for the following images:"
 echo
-echo "xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG"
-echo "xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG"
-echo "xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG"
-echo "xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG"
-echo "xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}"
-echo "xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG"
+echo "docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG"
+echo "docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG"
+echo "docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG"
+echo "docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG"
+echo "docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}"
+echo "docker push xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG"
 echo
 echo "You have to login docker hub and push it manually if it is ready"
 echo

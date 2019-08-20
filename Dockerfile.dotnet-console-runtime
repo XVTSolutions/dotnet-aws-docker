@@ -2,7 +2,7 @@
 # The database task only needs -runtime (console command) rather than full aspnetcore.
 # docker build -t 'xvtsolutions/dotnet-runtime-aws:2.1' -f Dockerfile.runtime .
 
-FROM microsoft/dotnet:2.1-runtime
+FROM microsoft/dotnet:2.2-runtime
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y awscli python3-pip && apt-get clean
 

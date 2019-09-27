@@ -1,6 +1,6 @@
-# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:2.2
+# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:<dotnet_version>
 
-FROM xvtsolutions/dotnet-aspnetcore-runtime-aws:2.2
+FROM xvtsolutions/dotnet-aspnetcore-runtime-aws:3.0
 
 RUN apt-get update && apt-get -y upgrade && apt-get install -y unoconv && apt-get clean
 

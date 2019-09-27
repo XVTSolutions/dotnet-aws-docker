@@ -8,4 +8,4 @@
 
 FROM xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:latest
 
-RUN curl -s -o /tmp/newrelic-apm.deb https://download.newrelic.com/dot_net_agent/latest_release/newrelic-netcore20-agent_8.17.438.0_amd64.deb && dpkg -i /tmp/newrelic-apm.deb
+RUN curl -s -o /tmp/newrelic-apm.deb https://download.newrelic.com/dot_net_agent/latest_release/newrelic-netcore20-agent_8.18.241.0_amd64.deb && dpkg -i /tmp/newrelic-apm.deb

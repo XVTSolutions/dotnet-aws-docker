@@ -1,86 +1,100 @@
-#!/bin/bash -e
+#!/bin/bash
 
 # Run this script to bring up the last up-to-date version of the current m$
 # dotnet image and build the coresponding xvt ones.
+echo "Current dotnet version: 3.0."
 
-DOTNET_VERSION="2.2"
+echo "Build the ASPNETCORE images"
 
-echo "Current dotnet version: $DOTNET_VERSION."
+docker pull mcr.microsoft.com/dotnet/core/aspnet:3.0
+FULL_VERSION_TAG=$(docker run --rm mcr.microsoft.com/dotnet/core/aspnet:3.0 dotnet --info | grep Version | awk '{print $2}')
 
-docker pull microsoft/dotnet:${DOTNET_VERSION}-aspnetcore-runtime
-
-FULL_VERSION_TAG=$(docker run --rm microsoft/dotnet:2.2-aspnetcore-runtime dotnet --info | grep Version | awk '{print $2}')
-
+echo "FULL_VERSION_TAG=$FULL_VERSION_TAG"
 
 docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws .
 docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws:latest
 
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG\n"
-
 docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws-newrelic .
 docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:latest
-
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG\n"
 
 docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws-unoconv .
 docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:latest
 
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG\n"
-
-docker pull microsoft/dotnet:${DOTNET_VERSION}-runtime
 docker build -t xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG} -f Dockerfile.dotnet-console-runtime .
 docker tag xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG} xvtsolutions/dotnet-runtime-aws:latest
-
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}\n"
-
-docker build -t xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG -f Dockerfile.runtime.unoconv .
-docker tag  xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG  xvtsolutions/dotnet-runtime-aws-unoconv:latest
-
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG\n"
 
 docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws-unoconv-newrelic .
 docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
 
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG \n"
-
-# sonar scanner
-
-docker pull microsoft/dotnet:2.2-sdk
-FULL_VERSION_TAG=$(docker run --rm microsoft/dotnet:2.2-sdk dotnet --version)
-docker build -t xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} -f Dockerfile.sonar-scanner .
-
-OUTPUT_TEXT="$OUTPUT_TEXT docker push xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG}\n"
+read -r -d '' OUTPUT << EOM
+$OUTPUT
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG
+EOM
 
 echo
 echo "############"
-echo "Completed build for the following images:"
+echo "Completed build for the following ASPNETCORE images:"
+echo "$OUTPUT"
 echo
-printf "$OUTPUT_TEXT"
+echo "############"
+
+
+echo "Build the dotnetcore RUNTIME only images (Non aspcore images)"
+
+docker pull mcr.microsoft.com/dotnet/core/runtime:3.0
+
+FULL_VERSION_TAG=$(docker run --rm mcr.microsoft.com/dotnet/core/runtime:3.0 dotnet --info | grep Version | awk '{print $2}')
+
+echo "FULL_VERSION_TAG=$FULL_VERSION_TAG"
+
+
+docker build -t xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG -f Dockerfile.runtime.unoconv .
+docker tag  xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG  xvtsolutions/dotnet-runtime-aws-unoconv:latest
+
+read -r -d '' OUTPUT <<EOM
+$OUTPUT
+docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}
+docker push xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG
+EOM
+
 echo
+echo "############"
+echo "Completed build for the following RUNTIME images:"
+echo "$OUTPUT"
+echo
+echo "############"
+
+echo "Build SDK Images for sonar scanner"
+
+docker pull mcr.microsoft.com/dotnet/core/sdk:3.0
+
+FULL_VERSION_TAG=$(docker run --rm mcr.microsoft.com/dotnet/core/sdk:3.0 dotnet --version)
+
+docker build -t xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} -f Dockerfile.sonar-scanner .
+docker tag xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} xvtsolutions/dotnet-sdk-sonar-scanner:latest
+
+read -r -d '' OUTPUT << EOM
+$OUTPUT
+docker push xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG}
+EOM
+
+echo
+echo "############"
+echo "Completed build for the following SDK images:"
+echo
+echo "$OUTPUT"
+echo
+echo "############"
+
+echo
+echo "############"
+echo "Completed build for all images."
 echo "You have to login docker hub and push it manually if it is ready"
 echo
 echo "############"
 
-echo "Run docker login and then copy paste the push commands below"
-
-cat <<EOF
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:latest
-
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:latest
-
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:latest
-
-docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}
-docker push xvtsolutions/dotnet-runtime-aws:latest
-
-docker push xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG
-docker push xvtsolutions/dotnet-runtime-aws-unoconv:latest
-
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG
-docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
-
-docker push xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG_SONAR}
-EOF
+echo "All images built"
+echo
+echo "$OUTPUT"

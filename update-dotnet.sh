@@ -26,12 +26,15 @@ docker tag xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG} xvtsolutions/dotn
 docker build -t xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG -f Dockerfile.dotnet-aspnetcore-runtime-aws-unoconv-newrelic .
 docker tag xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:latest
 
-read -r -d '' OUTPUT << EOM
+OUTPUT=$(cat <<EOM
 $OUTPUT
+docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}
 docker push xvtsolutions/dotnet-aspnetcore-runtime-aws:$FULL_VERSION_TAG
 docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-newrelic:$FULL_VERSION_TAG
 docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:$FULL_VERSION_TAG
+docker push xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv-newrelic:$FULL_VERSION_TAG
 EOM
+)
 
 echo
 echo "############"
@@ -53,11 +56,11 @@ echo "FULL_VERSION_TAG=$FULL_VERSION_TAG"
 docker build -t xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG -f Dockerfile.runtime.unoconv .
 docker tag  xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG  xvtsolutions/dotnet-runtime-aws-unoconv:latest
 
-read -r -d '' OUTPUT <<EOM
+OUTPUT=$(cat  <<EOM
 $OUTPUT
-docker push xvtsolutions/dotnet-runtime-aws:${FULL_VERSION_TAG}
 docker push xvtsolutions/dotnet-runtime-aws-unoconv:$FULL_VERSION_TAG
 EOM
+)
 
 echo
 echo "############"
@@ -75,10 +78,11 @@ FULL_VERSION_TAG=$(docker run --rm mcr.microsoft.com/dotnet/core/sdk:3.0 dotnet 
 docker build -t xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} -f Dockerfile.sonar-scanner .
 docker tag xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG} xvtsolutions/dotnet-sdk-sonar-scanner:latest
 
-read -r -d '' OUTPUT << EOM
+OUTPUT=$(cat << EOM
 $OUTPUT
 docker push xvtsolutions/dotnet-sdk-sonar-scanner:${FULL_VERSION_TAG}
 EOM
+)
 
 echo
 echo "############"

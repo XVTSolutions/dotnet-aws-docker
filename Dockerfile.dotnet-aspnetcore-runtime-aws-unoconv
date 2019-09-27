@@ -1,4 +1,4 @@
-# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:2.2
+# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws-unoconv:<dotnet_version>
 
 FROM xvtsolutions/dotnet-aspnetcore-runtime-aws:latest
 

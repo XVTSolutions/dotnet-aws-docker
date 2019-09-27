@@ -1,5 +1,7 @@
-# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws:2.2
+# This is to build xvtsolutions/dotnet-aspnetcore-runtime-aws:3.0
 
 FROM xvtsolutions/dotnet-aspnetcore-runtime-aws:latest
 
-RUN curl -s -o /tmp/newrelic-apm.deb https://download.newrelic.com/dot_net_agent/latest_release/newrelic-netcore20-agent_8.15.455.0_amd64.deb && dpkg -i /tmp/newrelic-apm.deb
+RUN curl -s -o /tmp/newrelic-apm.deb https://download.newrelic.com/dot_net_agent/latest_release/newrelic-netcore20-agent_8.18.241.0_amd64.deb && dpkg -i /tmp/newrelic-apm.deb
+
+
